@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>深度数据智能服务平台 - {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav>
+        <a href="/">首页</a>
+        <a href="/query">查询</a>
+        <a href="/chat">聊天</a>
+        <a href="/data">数据</a>
+        <a href="/report">报告</a>
+    </nav>
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

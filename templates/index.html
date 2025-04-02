@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}首页{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <!-- <h1>欢迎使用深度数据智能服务平台</h1> -->
+    <!-- 新增logo部分 -->
+    <div class="header-with-logo">
+        <img src="{{ url_for('static', filename='logo.png') }}" 
+             alt="深度数据平台Logo" 
+             class="site-logo">
+        <h1>欢迎使用深度数据智能服务平台</h1>
+    </div>
+    <div class="modules">
+        <a href="http://127.0.0.1:5810" class="module-card">
+            <h2>推荐</h2>
+            <p>执行智能推荐</p>
+        </a>
+        <!-- <a href="/query" class="module-card">
+            <h2>查询</h2>
+            <p>执行查询功能</p>
+        </a> -->
+        <a href="/chat" class="module-card">
+            <h2>聊天</h2>
+            <p>智能聊天机器人</p>
+        </a>
+        <a href="/data" class="module-card">
+            <h2>数据管理</h2>
+            <p>数据导入/导出与维护</p>
+        </a>
+        <a href="/report" class="module-card">
+            <h2>分析报告</h2>
+            <p>生成可视化分析报告</p>
+        </a>
+    </div>
+</div>
+{% endblock %}

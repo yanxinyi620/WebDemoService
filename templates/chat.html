@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="module-page">
+    <h1>智能聊天机器人</h1>
+    <div class="chat-container">
+        <!-- 聊天记录显示区域 -->
+        <div id="chat-history" class="chat-history">
+            <div class="system-message">
+                您好！我是智能助理，请随时提问
+            </div>
+        </div>
+        
+        <!-- 聊天输入表单 -->
+        <form id="chat-form" class="chat-form">
+            <input type="text" 
+                   id="user-input" 
+                   name="message"
+                   placeholder="请输入您的问题..."
+                   required>
+            <button type="submit">发送</button>
+        </form>
+    </div>
+</div>
+
+<script>
+document.getElementById('chat-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const input = document.getElementById('user-input');
+    const message = input.value.trim();
+    
+    if (!message) return;
+
+    // 禁用输入框和按钮
+    input.disabled = true;
+    e.target.querySelector('button').disabled = true;
+
+    try {
+        const response = await fetch('/chat_api', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `message=${encodeURIComponent(message)}`
+        });
+
+        const data = await response.json();
+        
+        // 添加用户消息
+        addMessage(data.user, 'user');
+        // 添加机器人回复
+        addMessage(data.bot, 'bot');
+        
+    } catch (error) {
+        console.error('请求失败:', error);
+        addMessage('服务暂时不可用，请稍后再试', 'error');
+    } finally {
+        // 恢复输入框和按钮
+        input.value = '';
+        input.disabled = false;
+        e.target.querySelector('button').disabled = false;
+        input.focus();
+    }
+});
+
+function addMessage(content, type) {
+    const history = document.getElementById('chat-history');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${type}-message`;
+    messageDiv.innerHTML = `
+        <div class="message-content">${content}</div>
+        <div class="message-time">${new Date().toLocaleTimeString()}</div>
+    `;
+    history.appendChild(messageDiv);
+    // 自动滚动到底部
+    history.scrollTop = history.scrollHeight;
+}
+</script>
+{% endblock %}
